@@ -1,0 +1,37 @@
+
+.bg-lightblue {
+    background-color: #99ccff;
+}
+
+.right {
+    float: right;
+
+}
+
+.container-fluid {
+    margin-top: 100px;
+    width: 100%;
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 550px) {
+    .container-fluid {
+        width: 100%;
+    }
+}
+
+.bar {
+    display: inline-block;
+    background-color: #0080ff;
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 7px;
+    /*height: 400px;*/
+}
+
+.floor {
+    height: 3px;
+    width: 100%;
+    background-color: #99ccff;
+}
