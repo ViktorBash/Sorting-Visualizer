@@ -1,8 +1,5 @@
 // TODO: Implement quicksort
-// TODO: Implement insertion sort
-// TODO: Implement selection sort
 // TODO: Implement mergesort
-
 
 
 const AMOUNT = 76  // Amount of bars that will be displayed
@@ -97,15 +94,16 @@ function bubbleSort() {
                 return
             }
         }
-        console.log(j)
         $(`#${allBars[j].curPosition}`).css("background-color", "green")
         j = 0;
     }
 }
 
-function quickSort() {
-
+function quickSort(arr = allBars) {
+    // if (arr.length <= 1) return arr;
+    // var pivot = arr[arr.length - 1]
 }
+
 
 function insertionSort() {
     for (let i = 0; i < allBars.length; i++) {
@@ -119,7 +117,8 @@ function insertionSort() {
                 return
             }
             else {
-                if (j !== 73) {
+                 if (j !== 73) {
+                    $(`#${allBars[j].curPosition}`).css("background-color", "green")
                     $(`#${allBars[j+2].curPosition}`).css("background-color", "green")
                 }
                 break
@@ -130,11 +129,37 @@ function insertionSort() {
 }
 
 function selectionSort() {
+    for (i; i < allBars.length - 1; i++) {
+        var minIndex = i
+        for (j = i + 1; j < allBars.length; j++) {
+            if (allBars[j].height < allBars[minIndex].height) {
+                minIndex = j;
+            }
+        }
+        if (minIndex !== i) {
+            let temp = allBars[i].height
+            allBars[i].height = allBars[minIndex].height
+            allBars[minIndex].height = temp;
+            console.log(i)
+            console.log(allBars[i])
+            $(`#${allBars[i].curPosition}`).css({"background-color": "green", "height": `${allBars[i].height}`})
+            for (let a = 0; a < i; a++) {
+                $(`#${allBars[a].curPosition}`).css("background-color", "green")
+            }
+            // $(`#${allBars[i].curPosition}`).css("height", `${allBars[i].height}`)
 
+            $(`#${allBars[minIndex].curPosition}`).css("height", `${allBars[minIndex].height}`)
+            return
+        }
+    }
+    for (let a = 70; a < 75; a++) {
+        $(`#${allBars[a].curPosition}`).css("background-color", "green")
+
+    }
 }
 
 function mergeSort() {
-
+    // var sorted = allBars.slice(),
 }
 
 // On load create all the bars
@@ -166,16 +191,14 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
     // We run the algorithm at an interval, each time the algorithm runs it only swaps two bars and then hits a
     // return statement.
     if (curSort === 1) {
-        setInterval(function() {bubbleSort()}, SPEED)}
+        var bubbleSortInterval = setInterval(function() {bubbleSort()}, SPEED)}
     else if (curSort === 2) {
-        setInterval(function() {quickSort()}, SPEED)}
+        let quickSortInterval = setInterval(function() {quickSort()}, SPEED)}
     else if (curSort === 3) {
-        setInterval(function() {insertionSort()}, SPEED)}
+        let insertionSortInterval = setInterval(function() {insertionSort()}, SPEED)}
     else if (curSort === 4) {
-        setInterval(function() {selectionSort()}, SPEED)}
+        let selectionSortInterval = setInterval(function() {selectionSort()}, SPEED)}
     else if (curSort === 5) {
-        setInterval(function() {mergeSort()}, SPEED)}
-
-    // UI.greenBars();
-
+        let mergeSortInterval = setInterval(function() {mergeSort()}, SPEED)}
 });
+
