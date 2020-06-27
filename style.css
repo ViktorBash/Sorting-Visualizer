@@ -34,3 +34,7 @@
     width: 100%;
     background-color: #99ccff;
 }
+
+.slider:hover {
+    opacity: 1;
+}

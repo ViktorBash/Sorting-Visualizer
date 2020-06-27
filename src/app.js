@@ -121,8 +121,15 @@ document.addEventListener("DOMContentLoaded", createBars());
 
 // "Sort!" has been pressed, get the algorithm from the selected radio button and start the algorithm
 document.getElementById("sortBtn").addEventListener("click", (e) => {
-    console.log(e.target)
+    // Disable sort button and slider, get speed from slider
     e.target.disabled = true;
+    let speedBar = document.getElementById("speedRange")
+    SPEED = speedBar.value
+    speedBar.disabled = true;
+
+    // Convert slider to milliseconds (if speed is 99, then milliseconds should really be 1, vice versa)
+    SPEED = Math.abs(SPEED-100)
+
     // Loop through 5 times and check each radiobutton to get the checked one (and thus algorithm to do)
     for (let i = 1; i < 6;i++) {
         let curRadio = document.getElementById(`inlineRadio${i}`)
@@ -131,6 +138,8 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
             curSort = i
         }
     }
+
+
 
     // Run an algorithm based on the input. The second argument (125) is the sorting speed.
     // We run the algorithm at an interval, each time the algorithm runs it only swaps two bars and then hits a
