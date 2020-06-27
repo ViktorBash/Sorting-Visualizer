@@ -39,6 +39,22 @@ class UI {
         body.appendChild(floor);
     }
 
+    // Make bars green
+    static greenBars() {
+        let container = document.querySelector(".container-fluid")
+        container.innerHTML = "";
+        for (let i = 0; i < allBars.length; i++) {
+            let curBar = allBars[i]
+
+            let container = document.querySelector(".container-fluid")
+            container.innerHTML += `
+            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: green;">
+            
+            </div>
+            `
+        }
+    }
+
 }
 
 // Creates all instances of Bar objects needed
@@ -72,15 +88,13 @@ function bubbleSort() {
                     $(`#${allBars[i+1].curPosition}`).css("height", `${allBars[i+1].height}`)
                     swapped = true;
                 }, 100)
-
             }
         }
 
 
     }
     while (swapped)
-    // console.log(allBars)
-
+    UI.greenBars()
 
 }
 
@@ -127,7 +141,6 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
         setInterval(function() {selectionSort()}, 125)}
     else if (curSort === 5) {
         setInterval(function() {mergeSort()}, 125)}
-
 
 
 
