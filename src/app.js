@@ -38,7 +38,22 @@ class UI {
         body.appendChild(floor);
     }
 
-    // Make bars green
+    // Make bars red
+    static redBars() {
+        let container = document.querySelector(".container-fluid")
+        container.innerHTML = "";
+        for (let i = 0; i < allBars.length; i++) {
+            let curBar = allBars[i]
+
+            let container = document.querySelector(".container-fluid")
+            container.innerHTML += `
+            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: #ff4d4d;">
+            
+            </div>
+            `
+        }
+    }
+
     static greenBars() {
         let container = document.querySelector(".container-fluid")
         container.innerHTML = "";
@@ -47,7 +62,7 @@ class UI {
 
             let container = document.querySelector(".container-fluid")
             container.innerHTML += `
-            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: green;">
+            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: red;">
             
             </div>
             `
@@ -82,6 +97,8 @@ function bubbleSort() {
                 return
             }
         }
+        console.log(j)
+        $(`#${allBars[j].curPosition}`).css("background-color", "green")
         j = 0;
     }
 }
@@ -102,10 +119,14 @@ function insertionSort() {
                 return
             }
             else {
+                if (j !== 73) {
+                    $(`#${allBars[j+2].curPosition}`).css("background-color", "green")
+                }
                 break
             }
         }
     }
+
 }
 
 function selectionSort() {
@@ -139,7 +160,7 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
         }
     }
 
-
+    // UI.redBars()
 
     // Run an algorithm based on the input. The second argument (125) is the sorting speed.
     // We run the algorithm at an interval, each time the algorithm runs it only swaps two bars and then hits a
@@ -154,7 +175,7 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
         setInterval(function() {selectionSort()}, SPEED)}
     else if (curSort === 5) {
         setInterval(function() {mergeSort()}, SPEED)}
-    UI.greenBars()
 
+    // UI.greenBars();
 
 });
