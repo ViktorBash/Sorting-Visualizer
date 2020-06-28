@@ -1,6 +1,6 @@
-// TODO: Implement quicksort
-// TODO: Implement mergesort
-
+// This is the main script for the sorting visualizer. There is a bar object, a UI class for UI functions, and
+// a bunch of sorting algorithms. There is an event listener on the "Sort" button to begin sorting on whichever
+// algorithm is selected.
 
 const AMOUNT = 76  // Amount of bars that will be displayed
 let allBars = []  // List of all Bar objects
@@ -51,6 +51,7 @@ class UI {
         }
     }
 
+    // Make bars green
     static greenBars() {
         let container = document.querySelector(".container-fluid")
         container.innerHTML = "";
@@ -59,7 +60,7 @@ class UI {
 
             let container = document.querySelector(".container-fluid")
             container.innerHTML += `
-            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: red;">
+            <div class="bar" id="${i + 1}" style="height: ${curBar.height}px; background-color: green;">
             
             </div>
             `
@@ -78,15 +79,16 @@ function createBars() {
     UI.displayBars()
 }
 
-// Initial value for i and j for all the algorithms that use nested for loops
+// Initial value for i and j for all the algorithms that use these variables.
 let i = 0
 let j = 0
 
+// bubble sort implementation
 function bubbleSort() {
     for (i; i < allBars.length; i++) {
         for (j; j < allBars.length - i - 1; j++) {
             if (allBars[j].height > allBars[j+1].height) {
-                temp = allBars[j].height
+                let temp = allBars[j].height
                 allBars[j].height = allBars[j+1].height
                 allBars[j+1].height = temp;
                 $(`#${allBars[j].curPosition}`).css("height", `${allBars[j].height}`)
@@ -99,31 +101,20 @@ function bubbleSort() {
     }
 }
 
-function quickSortHelper() {
-    // quickSort(allBars, 0, allBars.length - 1)
-    console.log(allBars)
-    // for (i = 0; i < 75; i++) {
-    //     quickSort(allBars, 0, allBars.length - 1)
-    //
-    // }
+// utility function for quick sort
+function quickSortUtil() {
     $(`#${1}`).css("background-color", "green")
     setInterval(function() {
         quickSort(allBars, 0, allBars.length - 1)
         // UI.displayBars()
-
     }, 100)
-    // quickSort(allBars, 0, allBars.length - 1)
-    // $(`#${AMOUNT-1}`).css("background-color", "green")
-    // quickSort(allBars, 0, allBars.length - 1)
-    // UI.displayBars()
-
 }
 
+// quicksort algorithm that is recursive and also calls partition
 function quickSort(arr = allBars, left, right) {
     let index;
     if (arr.length > 1) {
         index = partition(arr, left, right)
-
         if (left < index - 1) {
             quickSort(arr, left, index - 1)
         }
@@ -131,16 +122,15 @@ function quickSort(arr = allBars, left, right) {
             quickSort(arr, index, right)
         }
     }
-
-
 }
 
+// partition for quicksort
 function partition(arr, left, right) {
-    // console.log(Math.floor(right + left) / 2)
     let pivot = arr[Math.floor((right + left) / 2)].height
     i = left
     j = right
 
+    // Check right and left pointers and move them or swap
     while ( i <= j) {
         while (arr[i].height < pivot) {
             i++
@@ -149,20 +139,16 @@ function partition(arr, left, right) {
             j--
         }
         if (i <= j) {
-            let lol = swap(i, j)
+            swap(i, j)
             i++
             j--
-
         }
     }
     return i;
 }
 
+// Swap function for the quicksort algorithm
 function swap (leftIndex, rightIndex) {
-    if (rightIndex === 73) {
-        console.log(rightIndex)
-
-    }
     let temp = allBars[leftIndex].height
     allBars[leftIndex].height = allBars[rightIndex].height
     allBars[rightIndex].height = temp;
@@ -171,10 +157,9 @@ function swap (leftIndex, rightIndex) {
         $(`#${allBars[leftIndex+1].curPosition}`).css("background-color", "green")
         $(`#${allBars[rightIndex].curPosition}`).css("height", `${allBars[rightIndex].height}`)
     }, leftIndex*100)  // leftIndex constantly changes, ensuring that the bars will not update all at once
-
-
 }
 
+// insertion sort implementation
 function insertionSort() {
     for (let i = 0; i < allBars.length; i++) {
         for (let j = i - 1; j > -1; j--) {
@@ -195,9 +180,9 @@ function insertionSort() {
             }
         }
     }
-
 }
 
+// selection sort algorithm
 function selectionSort() {
     for (i; i < allBars.length - 1; i++) {
         var minIndex = i
@@ -226,9 +211,9 @@ function selectionSort() {
     }
 }
 
+// Bulk of merge algorithm
 function merge(left, right) {
     let arr = [];
-
     // While loop to compare left and right arrays to sort as they merge into one array
     while (left.length && right.length) {
         if (left[0].height < right[0].height) {
@@ -266,23 +251,24 @@ function merge(left, right) {
     while (right.length > 0) {
         arr.push(right.shift())
     }
-
     return arr
 }
 
+// recursive mergesort algorithm
 function mergeSort(arr) {
     if (arr.length < 2) {
         return arr;
     }
-
     const middle = Math.floor(arr.length / 2)
     const left = arr.slice(0, middle)
     const right = arr.slice(middle)
     return merge(mergeSort(left), mergeSort(right))
 }
 
+// merge sort helper function
 function mergeUtil() {
     let firstRun = mergeSort(allBars.slice());
+    UI.greenBars();
     let mergeFun = setInterval(function() {mergeSort(firstRun)}, SPEED + 100)
 }
 
@@ -311,16 +297,13 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
         }
     }
 
-    // UI.redBars()
-
     // Run an algorithm based on the input. The second argument (125) is the sorting speed.
     // We run the algorithm at an interval, each time the algorithm runs it only swaps two bars and then hits a
     // return statement.
     if (curSort === 1) {
         var bubbleSortInterval = setInterval(function() {bubbleSort()}, SPEED)}
     else if (curSort === 2) {
-        // let quickSortInterval = setInterval(function() {quickSortHelper()}, SPEED)}
-        quickSortHelper()
+        quickSortUtil()
     }
     else if (curSort === 3) {
         let insertionSortInterval = setInterval(function() {insertionSort()}, SPEED)}
