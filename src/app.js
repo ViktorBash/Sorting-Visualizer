@@ -99,6 +99,10 @@ function bubbleSort() {
     }
 }
 
+function quickSortHelper() {
+
+}
+
 function quickSort(arr = allBars) {
     // if (arr.length <= 1) return arr;
     // var pivot = arr[arr.length - 1]
@@ -146,8 +150,6 @@ function selectionSort() {
             for (let a = 0; a < i; a++) {
                 $(`#${allBars[a].curPosition}`).css("background-color", "green")
             }
-            // $(`#${allBars[i].curPosition}`).css("height", `${allBars[i].height}`)
-
             $(`#${allBars[minIndex].curPosition}`).css("height", `${allBars[minIndex].height}`)
             return
         }
@@ -158,8 +160,61 @@ function selectionSort() {
     }
 }
 
-function mergeSort() {
-    // var sorted = allBars.slice(),
+function merge(left, right) {
+    let arr = [];
+
+    while (left.length && right.length) {
+        if (left[0].height < right[0].height) {
+            if (left[0].curPosition < right[0].curPosition) {  // Left has smaller height and position
+                arr.push(left.shift())
+            }
+            else {  // left has smaller height but higher position
+                let temp = right[0].height
+                right[0].height = left[0].height
+                left[0].height = temp;
+                $(`#${left[0].curPosition}`).css("height", `${left[0].height}`)
+                $(`#${right[0].curPosition}`).css("height", `${right[0].height}`)
+                arr.push(right.shift())
+            }
+        }
+        else {
+            if (left[0].curPosition > right[0].curPosition) { // Left has larger height and large position
+                arr.push(right.shift())
+            }
+            else {  // Left has larger height but smaller position
+                let temp = left[0].height
+                left[0].height = right[0].height
+                right[0].height = temp
+                $(`#${left[0].curPosition}`).css("height", `${left[0].height}`)
+                $(`#${right[0].curPosition}`).css("height", `${right[0].height}`)
+                arr.push(left.shift())
+            }
+        }
+    }
+    while (left.length > 0) {
+        arr.push(left.shift())
+    }
+    while (right.length > 0) {
+        arr.push(right.shift())
+    }
+
+    return arr
+}
+
+function mergeSort(arr) {
+    if (arr.length < 2) {
+        return arr;
+    }
+
+    const middle = Math.floor(arr.length / 2)
+    const left = arr.slice(0, middle)
+    const right = arr.slice(middle)
+    return merge(mergeSort(left), mergeSort(right))
+}
+
+function mergeUtil() {
+    let firstRun = mergeSort(allBars.slice());
+    let mergeFun = setInterval(function() {mergeSort(firstRun)}, 1000)
 }
 
 // On load create all the bars
@@ -193,12 +248,14 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
     if (curSort === 1) {
         var bubbleSortInterval = setInterval(function() {bubbleSort()}, SPEED)}
     else if (curSort === 2) {
-        let quickSortInterval = setInterval(function() {quickSort()}, SPEED)}
+        let quickSortInterval = setInterval(function() {quickSortHelper()}, SPEED)}
     else if (curSort === 3) {
         let insertionSortInterval = setInterval(function() {insertionSort()}, SPEED)}
     else if (curSort === 4) {
-        let selectionSortInterval = setInterval(function() {selectionSort()}, SPEED)}
+        let selectionSortInterval = setInterval(function() {selectionSort()}, SPEED + 100)}
     else if (curSort === 5) {
-        let mergeSortInterval = setInterval(function() {mergeSort()}, SPEED)}
+        // let mergeSortInterval = setInterval(function() {mergeSortHelper()}, SPEED)}
+        mergeUtil()
+    }
 });
 
