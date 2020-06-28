@@ -1,2 +1,2 @@
 # Sorting-Visualizer
-This will be a sorting visualizer written in JavaScript.
+This is a sorting visualizer made with Javascript and some Bootsrap. It visualizes bubble sort, quick sort, insertion sort, selection sort and merge sort. You can adjust the speed of the sorting with a slider.
