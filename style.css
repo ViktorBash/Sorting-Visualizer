@@ -38,3 +38,6 @@
 .slider:hover {
     opacity: 1;
 }
+.slider:disabled {
+    opacity: 75%;
+}

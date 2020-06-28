@@ -100,14 +100,80 @@ function bubbleSort() {
 }
 
 function quickSortHelper() {
+    // quickSort(allBars, 0, allBars.length - 1)
+    console.log(allBars)
+    // for (i = 0; i < 75; i++) {
+    //     quickSort(allBars, 0, allBars.length - 1)
+    //
+    // }
+    $(`#${1}`).css("background-color", "green")
+    setInterval(function() {
+        quickSort(allBars, 0, allBars.length - 1)
+        // UI.displayBars()
+
+    }, 100)
+    // quickSort(allBars, 0, allBars.length - 1)
+    // $(`#${AMOUNT-1}`).css("background-color", "green")
+    // quickSort(allBars, 0, allBars.length - 1)
+    // UI.displayBars()
 
 }
 
-function quickSort(arr = allBars) {
-    // if (arr.length <= 1) return arr;
-    // var pivot = arr[arr.length - 1]
+function quickSort(arr = allBars, left, right) {
+    let index;
+    if (arr.length > 1) {
+        index = partition(arr, left, right)
+
+        if (left < index - 1) {
+            quickSort(arr, left, index - 1)
+        }
+        if (index < right) {
+            quickSort(arr, index, right)
+        }
+    }
+
+
 }
 
+function partition(arr, left, right) {
+    // console.log(Math.floor(right + left) / 2)
+    let pivot = arr[Math.floor((right + left) / 2)].height
+    i = left
+    j = right
+
+    while ( i <= j) {
+        while (arr[i].height < pivot) {
+            i++
+        }
+        while (arr[j].height > pivot) {
+            j--
+        }
+        if (i <= j) {
+            let lol = swap(i, j)
+            i++
+            j--
+
+        }
+    }
+    return i;
+}
+
+function swap (leftIndex, rightIndex) {
+    if (rightIndex === 73) {
+        console.log(rightIndex)
+
+    }
+    let temp = allBars[leftIndex].height
+    allBars[leftIndex].height = allBars[rightIndex].height
+    allBars[rightIndex].height = temp;
+    setTimeout(function() {
+        $(`#${allBars[leftIndex].curPosition}`).css("height", `${allBars[leftIndex].height}`)
+        $(`#${allBars[leftIndex+1].curPosition}`).css("background-color", "green")
+        $(`#${allBars[rightIndex].curPosition}`).css("height", `${allBars[rightIndex].height}`)
+    }, leftIndex*100)  // leftIndex constantly changes, ensuring that the bars will not update all at once
+
+
+}
 
 function insertionSort() {
     for (let i = 0; i < allBars.length; i++) {
@@ -163,6 +229,7 @@ function selectionSort() {
 function merge(left, right) {
     let arr = [];
 
+    // While loop to compare left and right arrays to sort as they merge into one array
     while (left.length && right.length) {
         if (left[0].height < right[0].height) {
             if (left[0].curPosition < right[0].curPosition) {  // Left has smaller height and position
@@ -172,8 +239,8 @@ function merge(left, right) {
                 let temp = right[0].height
                 right[0].height = left[0].height
                 left[0].height = temp;
-                $(`#${left[0].curPosition}`).css("height", `${left[0].height}`)
-                $(`#${right[0].curPosition}`).css("height", `${right[0].height}`)
+                $(`#${left[0].curPosition}`).css({"height": `${left[0].height}`, "background-color": "green"})
+                $(`#${right[0].curPosition}`).css({"height": `${right[0].height}`, "background-color": "green"})
                 arr.push(right.shift())
             }
         }
@@ -185,15 +252,17 @@ function merge(left, right) {
                 let temp = left[0].height
                 left[0].height = right[0].height
                 right[0].height = temp
-                $(`#${left[0].curPosition}`).css("height", `${left[0].height}`)
-                $(`#${right[0].curPosition}`).css("height", `${right[0].height}`)
+                $(`#${left[0].curPosition}`).css({"height": `${left[0].height}`, "background-color": "green"})
+                $(`#${right[0].curPosition}`).css({"height": `${right[0].height}`, "background-color": "green"})
                 arr.push(left.shift())
             }
         }
     }
+    // When the left array still has items in it
     while (left.length > 0) {
         arr.push(left.shift())
     }
+    // When the right array still has items in it
     while (right.length > 0) {
         arr.push(right.shift())
     }
@@ -214,7 +283,7 @@ function mergeSort(arr) {
 
 function mergeUtil() {
     let firstRun = mergeSort(allBars.slice());
-    let mergeFun = setInterval(function() {mergeSort(firstRun)}, 1000)
+    let mergeFun = setInterval(function() {mergeSort(firstRun)}, SPEED + 100)
 }
 
 // On load create all the bars
@@ -222,9 +291,11 @@ document.addEventListener("DOMContentLoaded", createBars());
 
 // "Sort!" has been pressed, get the algorithm from the selected radio button and start the algorithm
 document.getElementById("sortBtn").addEventListener("click", (e) => {
-    // Disable sort button and slider, get speed from slider
+    // Disable sort button and slider, get speed from slider, dim "Adjust speed" label
     e.target.disabled = true;
     let speedBar = document.getElementById("speedRange")
+    document.getElementById("speedText").style.color = "#6c757d"
+
     SPEED = speedBar.value
     speedBar.disabled = true;
 
@@ -248,13 +319,14 @@ document.getElementById("sortBtn").addEventListener("click", (e) => {
     if (curSort === 1) {
         var bubbleSortInterval = setInterval(function() {bubbleSort()}, SPEED)}
     else if (curSort === 2) {
-        let quickSortInterval = setInterval(function() {quickSortHelper()}, SPEED)}
+        // let quickSortInterval = setInterval(function() {quickSortHelper()}, SPEED)}
+        quickSortHelper()
+    }
     else if (curSort === 3) {
         let insertionSortInterval = setInterval(function() {insertionSort()}, SPEED)}
     else if (curSort === 4) {
         let selectionSortInterval = setInterval(function() {selectionSort()}, SPEED + 100)}
     else if (curSort === 5) {
-        // let mergeSortInterval = setInterval(function() {mergeSortHelper()}, SPEED)}
         mergeUtil()
     }
 });
